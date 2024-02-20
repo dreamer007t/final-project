@@ -30,13 +30,13 @@ const LandingSection = () => {
     },
     onSubmit: (values) => {
       // alert(JSON.stringify(values,null,2))
+      
       submit(values,values)
       onOpen(response.type,response.message)
     },
     validationSchema: Yup.object({
       firstName:Yup.string().required("Required"),
       email:Yup.string().required("Required"),
-      type:Yup.string().required("Required"),
       comment:Yup.string().required('Required'),
     }),
   });
@@ -61,7 +61,6 @@ const LandingSection = () => {
                   id="firstName"
                   name="firstName"
                   onChange={formik.handleChange}
-                  value={formik.values.firstName}
                 />
                 <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
               </FormControl>
@@ -86,7 +85,7 @@ const LandingSection = () => {
                   <option value="openSource">
                     Open source consultancy session
                   </option>
-                  <option value="other">Other</option>
+                  <option value="other">Other.</option>
                 </Select>
               </FormControl>
               <FormControl isInvalid={formik.errors.comment && formik.touched.comment}>

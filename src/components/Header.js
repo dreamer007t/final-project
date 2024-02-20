@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -7,7 +7,7 @@ import {
   faMedium,
   faStackOverflow,
 } from "@fortawesome/free-brands-svg-icons";
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, HStack, scroll } from "@chakra-ui/react";
 
 const socials = [
   {
@@ -31,10 +31,11 @@ const socials = [
     url: "https://stackoverflow.com",
   },
 ];
-const listItems = socials.map((social) =>
-    <Box><a href={social.url}><FontAwesomeIcon icon={social.icon} size="2x" /></a></Box>
+const listItems = socials.map((social,index) =>
+    <Box key={index}><a href={social.url}><FontAwesomeIcon icon={social.icon} size="2x" /></a></Box>
   );
 
+  
 const Header = () => {
   const handleClick = (anchor) => () => {
     const id = `${anchor}-section`;
@@ -46,10 +47,24 @@ const Header = () => {
       });
     }
   };
+  const [position, setPosition] = useState(window.pageYOffset)
+  const [visible, setVisible] = useState(true) 
+    useEffect(()=> {
+        const handleScroll = () => {
+          let moving = window.pageYOffset
+          setVisible(position > moving);
+          setPosition(moving)
+        };
+        window.addEventListener("scroll", handleScroll);
+        return(() => {
+          window.removeEventListener("scroll", handleScroll);
+        })
+    })
 
+  const ps = visible ? "sticky" : "absolute";
   return (
     <Box
-      position="fixed"
+      position={ps}
       top={0}
       left={0}
       right={0}
@@ -76,7 +91,6 @@ const Header = () => {
             <HStack spacing={8}>
               <a href="#projects-section">Projects</a>
               <a href="#contactme-section">Contact Me</a>
-              {/* Add links to Projects and Contact me section */}
             </HStack>
           </nav>
         </HStack>
